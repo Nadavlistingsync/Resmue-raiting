@@ -71,58 +71,65 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">
+        <h1 className="text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 mb-4">
           Resume Rater Pro
         </h1>
+        <p className="text-xl text-center text-gray-600 mb-8 font-medium">
+          Get expert feedback on your resume and improve your chances of landing your dream job
+        </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+        <form onSubmit={handleSubmit} className="space-y-8 bg-white p-8 rounded-xl shadow-lg">
           <div>
-            <label htmlFor="resume" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="resume" className="block text-lg font-semibold text-gray-800 mb-2">
               Resume Text
             </label>
+            <p className="text-sm text-gray-600 mb-2">Paste your resume content below for analysis</p>
             <textarea
               id="resume"
               value={resume}
               onChange={(e) => setResume(e.target.value)}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              rows={10}
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base min-h-[200px]"
               placeholder="Paste your resume text here..."
             />
           </div>
 
           <div>
-            <label htmlFor="industry" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="industry" className="block text-lg font-semibold text-gray-800 mb-2">
               Industry
             </label>
+            <p className="text-sm text-gray-600 mb-2">Select the industry that best matches your career focus</p>
             <select
               id="industry"
               value={industry}
               onChange={(e) => setIndustry(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white font-semibold text-gray-800"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base font-medium"
             >
-              <optgroup label="Technology" className="font-semibold">
-                <option value="Software Development">Software Development</option>
+              <optgroup label="Technology & IT" className="font-semibold">
+                <option value="Software Engineering">Software Engineering</option>
                 <option value="Data Science">Data Science & Analytics</option>
                 <option value="Cybersecurity">Cybersecurity</option>
-                <option value="IT Infrastructure">IT Infrastructure</option>
-                <option value="Product Management">Product Management</option>
+                <option value="Cloud Computing">Cloud Computing</option>
+                <option value="DevOps">DevOps & SRE</option>
+                <option value="AI ML">AI & Machine Learning</option>
               </optgroup>
-              <optgroup label="Business" className="font-semibold">
-                <option value="Finance">Finance & Banking</option>
-                <option value="Marketing">Marketing & Advertising</option>
-                <option value="Sales">Sales</option>
-                <option value="Consulting">Business Consulting</option>
-                <option value="HR">Human Resources</option>
+              <optgroup label="Business & Finance" className="font-semibold">
+                <option value="Investment Banking">Investment Banking</option>
+                <option value="Management Consulting">Management Consulting</option>
+                <option value="Financial Services">Financial Services</option>
+                <option value="Accounting">Accounting & Audit</option>
+                <option value="Business Analytics">Business Analytics</option>
+                <option value="Risk Management">Risk Management</option>
               </optgroup>
-              <optgroup label="Healthcare" className="font-semibold">
-                <option value="Medical">Medical Practice</option>
+              <optgroup label="Healthcare & Sciences" className="font-semibold">
+                <option value="Medicine">Medicine & Surgery</option>
                 <option value="Nursing">Nursing</option>
+                <option value="Biotechnology">Biotechnology</option>
+                <option value="Pharmaceutical">Pharmaceutical</option>
                 <option value="Healthcare Admin">Healthcare Administration</option>
-                <option value="Biotech">Biotechnology</option>
-                <option value="Pharma">Pharmaceutical</option>
+                <option value="Research">Scientific Research</option>
               </optgroup>
               <optgroup label="Engineering" className="font-semibold">
                 <option value="Mechanical">Mechanical Engineering</option>
@@ -130,19 +137,30 @@ export default function Home() {
                 <option value="Civil">Civil Engineering</option>
                 <option value="Chemical">Chemical Engineering</option>
                 <option value="Aerospace">Aerospace Engineering</option>
+                <option value="Robotics">Robotics Engineering</option>
               </optgroup>
-              <optgroup label="Creative" className="font-semibold">
-                <option value="Design">Design</option>
-                <option value="Media">Media & Entertainment</option>
-                <option value="Content">Content Creation</option>
-                <option value="Advertising">Advertising</option>
-                <option value="Arts">Fine Arts</option>
+              <optgroup label="Creative & Design" className="font-semibold">
+                <option value="UX Design">UX/UI Design</option>
+                <option value="Graphic Design">Graphic Design</option>
+                <option value="Product Design">Product Design</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+                <option value="Content Creation">Content Creation</option>
+                <option value="Brand Strategy">Brand Strategy</option>
               </optgroup>
-              <optgroup label="Other" className="font-semibold">
-                <option value="Education">Education</option>
-                <option value="Government">Government</option>
-                <option value="NonProfit">Non-Profit</option>
-                <option value="Legal">Legal</option>
+              <optgroup label="Professional Services" className="font-semibold">
+                <option value="Law">Legal</option>
+                <option value="HR">Human Resources</option>
+                <option value="Sales">Sales & Business Development</option>
+                <option value="Project Management">Project Management</option>
+                <option value="Operations">Operations Management</option>
+                <option value="Supply Chain">Supply Chain & Logistics</option>
+              </optgroup>
+              <optgroup label="Other Fields" className="font-semibold">
+                <option value="Education">Education & Teaching</option>
+                <option value="Government">Government & Public Service</option>
+                <option value="Nonprofit">Non-Profit & NGO</option>
+                <option value="Sustainability">Environmental & Sustainability</option>
+                <option value="Real Estate">Real Estate</option>
                 <option value="Other">Other</option>
               </optgroup>
             </select>
@@ -150,22 +168,23 @@ export default function Home() {
               <input
                 type="text"
                 placeholder="Please specify your industry"
-                className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base"
                 onChange={(e) => setCustomIndustry(e.target.value)}
               />
             )}
           </div>
 
           <div>
-            <label htmlFor="nickname" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="nickname" className="block text-lg font-semibold text-gray-800 mb-2">
               Nickname (optional)
             </label>
+            <p className="text-sm text-gray-600 mb-2">Choose a nickname to appear on the leaderboard</p>
             <input
               type="text"
               id="nickname"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base"
               placeholder="Enter a nickname for your rating"
             />
           </div>
@@ -173,7 +192,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-all duration-200"
           >
             {isLoading ? (
               <span className="flex items-center">
@@ -181,7 +200,7 @@ export default function Home() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Processing...
+                Analyzing Resume...
               </span>
             ) : (
               'Rate My Resume'
@@ -190,85 +209,85 @@ export default function Home() {
         </form>
 
         {error && (
-          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-red-600">{error}</p>
+          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600 font-medium">{error}</p>
           </div>
         )}
 
         {rating && (
           <div className="mt-8 space-y-6">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900">
-                Total Score: {rating.totalScore}/100
+              <h2 className="text-4xl font-bold text-gray-900">
+                Total Score: <span className="text-indigo-600">{rating.totalScore}/100</span>
               </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Presentation Scores</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Formatting</span>
-                    <span className="font-medium">{rating.presentation.formatting}/10</span>
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Presentation Scores</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Formatting</span>
+                    <span className="text-lg font-bold text-indigo-600">{rating.presentation.formatting}/10</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Action Verbs</span>
-                    <span className="font-medium">{rating.presentation.actionVerbs}/10</span>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Action Verbs</span>
+                    <span className="text-lg font-bold text-indigo-600">{rating.presentation.actionVerbs}/10</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Quantifiable Results</span>
-                    <span className="font-medium">{rating.presentation.quantifiableResults}/10</span>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Quantifiable Results</span>
+                    <span className="text-lg font-bold text-indigo-600">{rating.presentation.quantifiableResults}/10</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Section Structure</span>
-                    <span className="font-medium">{rating.presentation.sectionStructure}/10</span>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Section Structure</span>
+                    <span className="text-lg font-bold text-indigo-600">{rating.presentation.sectionStructure}/10</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Substance Scores</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Impact</span>
-                    <span className="font-medium">{rating.substance.impact}/10</span>
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Substance Scores</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Impact</span>
+                    <span className="text-lg font-bold text-indigo-600">{rating.substance.impact}/10</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Complexity</span>
-                    <span className="font-medium">{rating.substance.complexity}/10</span>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Complexity</span>
+                    <span className="text-lg font-bold text-indigo-600">{rating.substance.complexity}/10</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Leadership</span>
-                    <span className="font-medium">{rating.substance.leadership}/10</span>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Leadership</span>
+                    <span className="text-lg font-bold text-indigo-600">{rating.substance.leadership}/10</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Originality</span>
-                    <span className="font-medium">{rating.substance.originality}/10</span>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Originality</span>
+                    <span className="text-lg font-bold text-indigo-600">{rating.substance.originality}/10</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Presentation Feedback</h3>
-                <ul className="space-y-2">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Presentation Feedback</h3>
+                <ul className="space-y-3">
                   {rating.presentationFeedback.map((feedback, index) => (
                     <li key={index} className="flex items-start">
                       <span className="text-indigo-600 mr-2">•</span>
-                      <span>{feedback}</span>
+                      <span className="text-gray-700">{feedback}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Substance Feedback</h3>
-                <ul className="space-y-2">
+              <div className="bg-white p-6 rounded-xl shadow-lg">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Substance Feedback</h3>
+                <ul className="space-y-3">
                   {rating.substanceFeedback.map((feedback, index) => (
                     <li key={index} className="flex items-start">
                       <span className="text-indigo-600 mr-2">•</span>
-                      <span>{feedback}</span>
+                      <span className="text-gray-700">{feedback}</span>
                     </li>
                   ))}
                 </ul>
