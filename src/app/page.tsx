@@ -120,7 +120,7 @@ export default function Home() {
       // Track successful resume rewrite
       if (typeof window !== 'undefined') {
         const analytics = (window as { va?: (event: string, data: unknown) => void }).va;
-        analytics?.('event', 'resume_rewritten', {
+        analytics?.('resume_rewritten', {
           industry,
         });
       }
