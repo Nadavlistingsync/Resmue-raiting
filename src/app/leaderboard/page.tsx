@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import LeaderboardTable from '@/components/LeaderboardTable';
-import { supabase } from '@/lib/supabase';
 
 interface LeaderboardEntry {
   id: string;

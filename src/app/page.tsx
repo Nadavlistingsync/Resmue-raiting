@@ -25,6 +25,15 @@ interface ScoringResults {
   resumeId?: string;
 }
 
+interface ApiError {
+  message: string;
+}
+
+interface ApiResponse {
+  data?: unknown;
+  error?: ApiError;
+}
+
 const industries = [
   'Technology',
   'Finance',
@@ -69,7 +78,7 @@ export default function Home() {
         throw new Error('Failed to rate resume');
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as ScoringResults;
       setResults(data);
       setResumeId(data.resumeId);
 
@@ -80,8 +89,8 @@ export default function Home() {
           totalScore: data.totalScore,
         });
       }
-    } catch (err) {
-      Sentry.captureException(err);
+    } catch (error) {
+      Sentry.captureException(error);
       setError('An error occurred while rating your resume. Please try again.');
     } finally {
       setIsLoading(false);
@@ -102,8 +111,8 @@ export default function Home() {
           resumeText,
           industry,
           scoringResults: {
-            presentation: results.presentation,
-            substance: results.substance,
+            presentation: results?.presentation,
+            substance: results?.substance,
           },
         }),
       });
@@ -112,7 +121,7 @@ export default function Home() {
         throw new Error('Failed to rewrite resume');
       }
 
-      const data = await response.json();
+      const data = await response.json() as { rewrittenResume: string };
       setRewrittenResume(data.rewrittenResume);
       setShowFeedback(true);
 
@@ -122,8 +131,8 @@ export default function Home() {
           industry,
         });
       }
-    } catch (err) {
-      Sentry.captureException(err);
+    } catch (error) {
+      Sentry.captureException(error);
       setError('An error occurred while rewriting your resume. Please try again.');
     } finally {
       setIsLoading(false);
