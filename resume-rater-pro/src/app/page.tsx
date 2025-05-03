@@ -20,6 +20,10 @@ interface RatingResponse {
   substanceFeedback: string[];
 }
 
+interface ErrorResponse {
+  message: string;
+}
+
 export default function Home() {
   const [resume, setResume] = useState('');
   const [industry, setIndustry] = useState('Tech');
@@ -48,13 +52,18 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to rate resume');
+        const errorData: ErrorResponse = await response.json();
+        throw new Error(errorData.message || 'Failed to rate resume');
       }
 
-      const data = await response.json();
+      const data: RatingResponse = await response.json();
       setRating(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setIsLoading(false);
     }
