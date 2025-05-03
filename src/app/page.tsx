@@ -29,11 +29,6 @@ interface ApiError {
   message: string;
 }
 
-interface ApiResponse {
-  data?: unknown;
-  error?: ApiError;
-}
-
 const industries = [
   'Technology',
   'Finance',
@@ -84,7 +79,8 @@ export default function Home() {
 
       // Track successful resume rating
       if (typeof window !== 'undefined') {
-        (window as any).va?.('event', 'resume_rated', {
+        const analytics = (window as { va?: (event: string, data: unknown) => void }).va;
+        analytics?.('event', 'resume_rated', {
           industry,
           totalScore: data.totalScore,
         });
@@ -127,7 +123,8 @@ export default function Home() {
 
       // Track successful resume rewrite
       if (typeof window !== 'undefined') {
-        (window as any).va?.('event', 'resume_rewritten', {
+        const analytics = (window as { va?: (event: string, data: unknown) => void }).va;
+        analytics?.('event', 'resume_rewritten', {
           industry,
         });
       }
