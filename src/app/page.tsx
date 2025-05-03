@@ -25,10 +25,6 @@ interface ScoringResults {
   resumeId?: string;
 }
 
-interface ApiError {
-  message: string;
-}
-
 const industries = [
   'Technology',
   'Finance',
