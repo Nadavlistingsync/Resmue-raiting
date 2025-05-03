@@ -1,79 +1,80 @@
 # Resume Rater Pro
 
-An AI-powered resume rating and improvement tool built with Next.js, Supabase, and OpenAI GPT-4.
+A modern SaaS application that helps users improve their resumes using AI-powered analysis and rewriting.
 
 ## Features
 
-- Resume rating with detailed scoring breakdown
-- Industry-specific feedback
-- Leaderboard of top submissions
-- AI-powered resume rewriting (premium feature)
+- AI-powered resume analysis and scoring
+- Detailed feedback on presentation and substance
+- Industry-specific resume rewriting
+- User feedback collection and analytics
+- Error tracking and monitoring
 - Modern, responsive UI with Tailwind CSS
+- Secure authentication with Supabase
+- Payment processing with Stripe
 
 ## Tech Stack
 
-- Next.js (App Router)
+- Next.js 13+ with App Router
 - TypeScript
 - Tailwind CSS
-- Supabase (Auth + Database)
-- OpenAI GPT-4
-- Stripe (for premium features)
+- Supabase (Auth & Database)
+- Stripe (Payments)
+- OpenAI GPT-4-turbo
+- Vercel Analytics
+- Sentry (Error Tracking)
 
 ## Getting Started
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/resume-rater-pro.git
-   cd resume-rater-pro
-   ```
-
+1. Clone the repository
 2. Install dependencies:
    ```bash
    npm install
    ```
-
-3. Create a `.env` file in the root directory with the following variables:
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env.local
    ```
-   OPENAI_API_KEY=your_openai_api_key
-   SUPABASE_URL=your_supabase_url
-   SUPABASE_ANON_KEY=your_supabase_anon_key
-   STRIPE_SECRET_KEY=your_stripe_secret_key
-   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-   ```
+   Fill in the required environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_KEY`
+   - `STRIPE_SECRET_KEY`
+   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+   - `OPENAI_API_KEY`
+   - `NEXT_PUBLIC_SENTRY_DSN`
 
-4. Set up your Supabase database:
-   - Create a new project in Supabase
-   - Create a table called `resume_ratings` with the following columns:
-     - `id` (uuid, primary key)
-     - `nickname` (text)
-     - `industry` (text)
-     - `total_score` (integer)
-     - `presentation_scores` (jsonb)
-     - `substance_scores` (jsonb)
-     - `feedback` (jsonb)
-     - `created_at` (timestamp with time zone)
-
-5. Run the development server:
+4. Run the development server:
    ```bash
    npm run dev
    ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Project Structure
+## Database Migrations
 
-- `/app` - Next.js app router pages
-- `/components` - Reusable React components
-- `/lib` - Utility functions and client configurations
-- `/utils` - Helper functions and prompt generators
+To run database migrations:
+
+```bash
+npx supabase db reset
+```
+
+## Analytics and Monitoring
+
+The application includes comprehensive analytics and monitoring:
+
+- User engagement tracking with Vercel Analytics
+- Error tracking and monitoring with Sentry
+- User feedback collection and analysis
+- Performance monitoring
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
 
 ## License
 
