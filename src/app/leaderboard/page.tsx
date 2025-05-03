@@ -6,9 +6,10 @@ import LeaderboardTable from '@/components/LeaderboardTable';
 interface LeaderboardEntry {
   id: string;
   nickname: string;
-  score: number;
+  total_score: number;
   industry: string;
   created_at: string;
+  isCurrentUser?: boolean;
 }
 
 export default function Leaderboard() {
