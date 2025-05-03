@@ -71,7 +71,7 @@ export default function Home() {
 
       const data = (await response.json()) as ScoringResults;
       setResults(data);
-      setResumeId(data.resumeId);
+      setResumeId(data.resumeId ?? null);
 
       // Track successful resume rating
       if (typeof window !== 'undefined') {
