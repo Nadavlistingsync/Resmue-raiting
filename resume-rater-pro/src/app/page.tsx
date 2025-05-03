@@ -1,103 +1,226 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+
+interface RatingResponse {
+  totalScore: number;
+  presentation: {
+    formatting: number;
+    actionVerbs: number;
+    quantifiableResults: number;
+    sectionStructure: number;
+  };
+  substance: {
+    impact: number;
+    complexity: number;
+    leadership: number;
+    originality: number;
+  };
+  presentationFeedback: string[];
+  substanceFeedback: string[];
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [resume, setResume] = useState('');
+  const [industry, setIndustry] = useState('Tech');
+  const [nickname, setNickname] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [rating, setRating] = useState<RatingResponse | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    setRating(null);
+
+    try {
+      const response = await fetch('/api/rate-resume', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          resume,
+          industry,
+          nickname,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to rate resume');
+      }
+
+      const data = await response.json();
+      setRating(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">
+          Resume Rater Pro
+        </h1>
+
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+          <div>
+            <label htmlFor="resume" className="block text-sm font-medium text-gray-700">
+              Resume Text
+            </label>
+            <textarea
+              id="resume"
+              value={resume}
+              onChange={(e) => setResume(e.target.value)}
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              rows={10}
+              placeholder="Paste your resume text here..."
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </div>
+
+          <div>
+            <label htmlFor="industry" className="block text-sm font-medium text-gray-700">
+              Industry
+            </label>
+            <select
+              id="industry"
+              value={industry}
+              onChange={(e) => setIndustry(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            >
+              <option value="Tech">Tech</option>
+              <option value="Finance">Finance</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Healthcare">Healthcare</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="nickname" className="block text-sm font-medium text-gray-700">
+              Nickname (optional)
+            </label>
+            <input
+              type="text"
+              id="nickname"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Enter a nickname for your rating"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            {isLoading ? (
+              <span className="flex items-center">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </span>
+            ) : (
+              'Rate My Resume'
+            )}
+          </button>
+        </form>
+
+        {error && (
+          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
+
+        {rating && (
+          <div className="mt-8 space-y-6">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Total Score: {rating.totalScore}/100
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Presentation Scores</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span>Formatting</span>
+                    <span className="font-medium">{rating.presentation.formatting}/10</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Action Verbs</span>
+                    <span className="font-medium">{rating.presentation.actionVerbs}/10</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Quantifiable Results</span>
+                    <span className="font-medium">{rating.presentation.quantifiableResults}/10</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Section Structure</span>
+                    <span className="font-medium">{rating.presentation.sectionStructure}/10</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Substance Scores</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span>Impact</span>
+                    <span className="font-medium">{rating.substance.impact}/10</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Complexity</span>
+                    <span className="font-medium">{rating.substance.complexity}/10</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Leadership</span>
+                    <span className="font-medium">{rating.substance.leadership}/10</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Originality</span>
+                    <span className="font-medium">{rating.substance.originality}/10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Presentation Feedback</h3>
+                <ul className="space-y-2">
+                  {rating.presentationFeedback.map((feedback, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-indigo-600 mr-2">•</span>
+                      <span>{feedback}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Substance Feedback</h3>
+                <ul className="space-y-2">
+                  {rating.substanceFeedback.map((feedback, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-indigo-600 mr-2">•</span>
+                      <span>{feedback}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
