@@ -1,6 +1,6 @@
 # Resume Rater Pro
 
-A full-stack SaaS application that uses AI to analyze and rate resumes, providing detailed feedback and suggestions for improvement.
+A full-stack application that uses AI to analyze and rate resumes, providing detailed feedback and suggestions for improvement.
 
 ## Features
 
@@ -8,7 +8,6 @@ A full-stack SaaS application that uses AI to analyze and rate resumes, providin
 - Detailed scoring and feedback
 - Industry-specific recommendations
 - Leaderboard system
-- Secure payment processing with Stripe
 - Real-time analytics and error tracking
 
 ## Tech Stack
@@ -17,7 +16,6 @@ A full-stack SaaS application that uses AI to analyze and rate resumes, providin
 - TypeScript
 - Tailwind CSS
 - Supabase
-- Stripe
 - OpenAI GPT-4
 - Vercel Analytics
 - Sentry for error tracking
@@ -30,7 +28,6 @@ A full-stack SaaS application that uses AI to analyze and rate resumes, providin
 - npm or yarn
 - Supabase account
 - OpenAI API key
-- Stripe account
 
 ### Local Development
 
@@ -50,9 +47,6 @@ A full-stack SaaS application that uses AI to analyze and rate resumes, providin
    NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
    OPENAI_API_KEY=your-openai-api-key
-   STRIPE_SECRET_KEY=your-stripe-secret-key
-   STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
-   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
    ```
 
 4. Start the development server:
@@ -75,9 +69,6 @@ A full-stack SaaS application that uses AI to analyze and rate resumes, providin
      - `NEXT_PUBLIC_SUPABASE_URL`
      - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
      - `OPENAI_API_KEY`
-     - `STRIPE_SECRET_KEY`
-     - `STRIPE_WEBHOOK_SECRET`
-     - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
 
 3. Vercel will automatically deploy your application on every push to the main branch.
 
