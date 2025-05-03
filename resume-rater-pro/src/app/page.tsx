@@ -31,6 +31,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [rating, setRating] = useState<RatingResponse | null>(null);
+  const [customIndustry, setCustomIndustry] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ export default function Home() {
         },
         body: JSON.stringify({
           resume,
-          industry,
+          industry: industry === 'Other' ? customIndustry : industry,
           nickname,
         }),
       });
@@ -100,13 +101,59 @@ export default function Home() {
               id="industry"
               value={industry}
               onChange={(e) => setIndustry(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white font-semibold text-gray-800"
             >
-              <option value="Tech">Tech</option>
-              <option value="Finance">Finance</option>
-              <option value="Marketing">Marketing</option>
-              <option value="Healthcare">Healthcare</option>
+              <optgroup label="Technology" className="font-semibold">
+                <option value="Software Development">Software Development</option>
+                <option value="Data Science">Data Science & Analytics</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="IT Infrastructure">IT Infrastructure</option>
+                <option value="Product Management">Product Management</option>
+              </optgroup>
+              <optgroup label="Business" className="font-semibold">
+                <option value="Finance">Finance & Banking</option>
+                <option value="Marketing">Marketing & Advertising</option>
+                <option value="Sales">Sales</option>
+                <option value="Consulting">Business Consulting</option>
+                <option value="HR">Human Resources</option>
+              </optgroup>
+              <optgroup label="Healthcare" className="font-semibold">
+                <option value="Medical">Medical Practice</option>
+                <option value="Nursing">Nursing</option>
+                <option value="Healthcare Admin">Healthcare Administration</option>
+                <option value="Biotech">Biotechnology</option>
+                <option value="Pharma">Pharmaceutical</option>
+              </optgroup>
+              <optgroup label="Engineering" className="font-semibold">
+                <option value="Mechanical">Mechanical Engineering</option>
+                <option value="Electrical">Electrical Engineering</option>
+                <option value="Civil">Civil Engineering</option>
+                <option value="Chemical">Chemical Engineering</option>
+                <option value="Aerospace">Aerospace Engineering</option>
+              </optgroup>
+              <optgroup label="Creative" className="font-semibold">
+                <option value="Design">Design</option>
+                <option value="Media">Media & Entertainment</option>
+                <option value="Content">Content Creation</option>
+                <option value="Advertising">Advertising</option>
+                <option value="Arts">Fine Arts</option>
+              </optgroup>
+              <optgroup label="Other" className="font-semibold">
+                <option value="Education">Education</option>
+                <option value="Government">Government</option>
+                <option value="NonProfit">Non-Profit</option>
+                <option value="Legal">Legal</option>
+                <option value="Other">Other</option>
+              </optgroup>
             </select>
+            {industry === 'Other' && (
+              <input
+                type="text"
+                placeholder="Please specify your industry"
+                className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                onChange={(e) => setCustomIndustry(e.target.value)}
+              />
+            )}
           </div>
 
           <div>
