@@ -1,80 +1,93 @@
 # Resume Rater Pro
 
-A modern SaaS application that helps users improve their resumes using AI-powered analysis and rewriting.
+A full-stack SaaS application that uses AI to analyze and rate resumes, providing detailed feedback and suggestions for improvement.
 
 ## Features
 
-- AI-powered resume analysis and scoring
-- Detailed feedback on presentation and substance
-- Industry-specific resume rewriting
-- User feedback collection and analytics
-- Error tracking and monitoring
-- Modern, responsive UI with Tailwind CSS
-- Secure authentication with Supabase
-- Payment processing with Stripe
+- AI-powered resume analysis
+- Detailed scoring and feedback
+- Industry-specific recommendations
+- Leaderboard system
+- Secure payment processing with Stripe
+- Real-time analytics and error tracking
 
 ## Tech Stack
 
-- Next.js 13+ with App Router
+- Next.js 15
 - TypeScript
 - Tailwind CSS
-- Supabase (Auth & Database)
-- Stripe (Payments)
-- OpenAI GPT-4-turbo
+- Supabase
+- Stripe
+- OpenAI GPT-4
 - Vercel Analytics
-- Sentry (Error Tracking)
+- Sentry for error tracking
 
 ## Getting Started
 
-1. Clone the repository
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Supabase account
+- OpenAI API key
+- Stripe account
+
+### Local Development
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/resume-rater-pro.git
+   cd resume-rater-pro
+   ```
+
 2. Install dependencies:
    ```bash
    npm install
    ```
-3. Set up environment variables:
-   ```bash
-   cp .env.example .env.local
-   ```
-   Fill in the required environment variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_KEY`
-   - `STRIPE_SECRET_KEY`
-   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-   - `OPENAI_API_KEY`
-   - `NEXT_PUBLIC_SENTRY_DSN`
 
-4. Run the development server:
+3. Create a `.env.local` file with your environment variables:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+   OPENAI_API_KEY=your-openai-api-key
+   STRIPE_SECRET_KEY=your-stripe-secret-key
+   STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+   ```
+
+4. Start the development server:
    ```bash
    npm run dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+### Deployment
 
-## Database Migrations
+1. Push your code to GitHub:
+   ```bash
+   git add .
+   git commit -m "Initial commit"
+   git push origin main
+   ```
 
-To run database migrations:
+2. Deploy to Vercel:
+   - Connect your GitHub repository to Vercel
+   - Add the following environment variables in Vercel:
+     - `NEXT_PUBLIC_SUPABASE_URL`
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+     - `OPENAI_API_KEY`
+     - `STRIPE_SECRET_KEY`
+     - `STRIPE_WEBHOOK_SECRET`
+     - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
 
-```bash
-npx supabase db reset
-```
-
-## Analytics and Monitoring
-
-The application includes comprehensive analytics and monitoring:
-
-- User engagement tracking with Vercel Analytics
-- Error tracking and monitoring with Sentry
-- User feedback collection and analysis
-- Performance monitoring
+3. Vercel will automatically deploy your application on every push to the main branch.
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
