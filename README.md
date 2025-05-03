@@ -1,35 +1,37 @@
 # Resume Rater Pro
 
-A full-stack application that uses AI to analyze and rate resumes, providing detailed feedback and suggestions for improvement.
+A full-stack SaaS application that helps users improve their resumes by providing AI-powered analysis and feedback.
 
 ## Features
 
-- AI-powered resume analysis
-- Detailed scoring and feedback
-- Industry-specific recommendations
+- AI-powered resume analysis and scoring
+- Industry-specific feedback
+- Resume rewriting suggestions
 - Leaderboard system
-- Real-time analytics and error tracking
+- User feedback collection
+- Analytics tracking
 
 ## Tech Stack
 
 - Next.js 15
+- React 19
 - TypeScript
 - Tailwind CSS
 - Supabase
 - OpenAI GPT-4
+- Sentry
 - Vercel Analytics
-- Sentry for error tracking
 
-## Getting Started
+## Prerequisites
 
-### Prerequisites
-
-- Node.js 18+
+- Node.js 18.x
 - npm or yarn
 - Supabase account
 - OpenAI API key
+- Sentry account (optional)
+- Vercel account (optional)
 
-### Local Development
+## Setup
 
 1. Clone the repository:
    ```bash
@@ -40,21 +42,48 @@ A full-stack application that uses AI to analyze and rate resumes, providing det
 2. Install dependencies:
    ```bash
    npm install
+   # or
+   yarn install
    ```
 
-3. Create a `.env.local` file with your environment variables:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-   OPENAI_API_KEY=your-openai-api-key
+3. Create a `.env` file based on `.env.example` and fill in your environment variables:
+   ```bash
+   cp .env.example .env
    ```
 
-4. Start the development server:
+4. Set up your Supabase database with the following tables:
+
+   ```sql
+   -- resume_ratings table
+   create table resume_ratings (
+     id uuid default uuid_generate_v4() primary key,
+     nickname text not null,
+     industry text not null,
+     total_score integer not null,
+     presentation_scores jsonb not null,
+     substance_scores jsonb not null,
+     feedback jsonb not null,
+     created_at timestamp with time zone default timezone('utc'::text, now()) not null
+   );
+
+   -- feedback table
+   create table feedback (
+     id uuid default uuid_generate_v4() primary key,
+     resume_id uuid references resume_ratings(id),
+     rating integer not null,
+     comment text,
+     created_at timestamp with time zone default timezone('utc'::text, now()) not null
+   );
+   ```
+
+5. Run the development server:
    ```bash
    npm run dev
+   # or
+   yarn dev
    ```
 
-### Deployment
+## Deployment
 
 1. Push your code to GitHub:
    ```bash
@@ -65,12 +94,8 @@ A full-stack application that uses AI to analyze and rate resumes, providing det
 
 2. Deploy to Vercel:
    - Connect your GitHub repository to Vercel
-   - Add the following environment variables in Vercel:
-     - `NEXT_PUBLIC_SUPABASE_URL`
-     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-     - `OPENAI_API_KEY`
-
-3. Vercel will automatically deploy your application on every push to the main branch.
+   - Add your environment variables in the Vercel dashboard
+   - Deploy
 
 ## Contributing
 
