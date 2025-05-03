@@ -3,9 +3,27 @@
 import React, { useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import * as Sentry from "@sentry/nextjs";
-import ScoreCard from '@/components/ScoreCard';
 import RewriteCard from '@/components/RewriteCard';
 import FeedbackForm from '@/components/FeedbackForm';
+
+interface ScoringResults {
+  totalScore: number;
+  presentation: {
+    formatting: number;
+    actionVerbs: number;
+    quantifiableResults: number;
+    sectionStructure: number;
+  };
+  substance: {
+    impact: number;
+    complexity: number;
+    leadership: number;
+    originality: number;
+  };
+  presentationFeedback: string[];
+  substanceFeedback: string[];
+  resumeId?: string;
+}
 
 const industries = [
   'Technology',
@@ -23,7 +41,7 @@ export default function Home() {
   const [industry, setIndustry] = useState('');
   const [nickname, setNickname] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<ScoringResults | null>(null);
   const [rewrittenResume, setRewrittenResume] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);

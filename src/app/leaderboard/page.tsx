@@ -4,27 +4,31 @@ import React, { useEffect, useState } from 'react';
 import LeaderboardTable from '@/components/LeaderboardTable';
 import { supabase } from '@/lib/supabase';
 
+interface LeaderboardEntry {
+  id: string;
+  nickname: string;
+  score: number;
+  industry: string;
+  created_at: string;
+}
+
 export default function Leaderboard() {
-  const [entries, setEntries] = useState<any[]>([]);
+  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const { data, error } = await supabase
-          .from('resume_ratings')
-          .select('*')
-          .order('total_score', { ascending: false })
-          .limit(50);
-
-        if (error) {
-          throw error;
+        const response = await fetch('/api/leaderboard');
+        if (!response.ok) {
+          throw new Error('Failed to fetch leaderboard');
         }
-
-        setEntries(data || []);
-      } catch (err) {
+        const data = await response.json();
+        setEntries(data);
+      } catch (error) {
         setError('Failed to load leaderboard data');
+        console.error('Error fetching leaderboard:', error);
       } finally {
         setIsLoading(false);
       }
