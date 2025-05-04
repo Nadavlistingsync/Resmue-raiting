@@ -7,6 +7,18 @@ import FeedbackForm from '@/components/FeedbackForm';
 
 interface ScoringResults {
   totalScore: number;
+  scores: {
+    content: number;
+    formatting: number;
+    merit: number;
+    relevance: number;
+  };
+  feedback: {
+    content: string[];
+    formatting: string[];
+    merit: string[];
+    relevance: string[];
+  };
   presentation: {
     formatting: number;
     actionVerbs: number;
@@ -60,7 +72,6 @@ export default function Home() {
         body: JSON.stringify({
           resumeText,
           industry,
-          nickname,
         }),
       });
 
@@ -180,170 +191,78 @@ export default function Home() {
 
               <div>
                 <label htmlFor="industry" className="block text-lg font-semibold text-gray-800 mb-2">
-                  Industry
+                  Industry (Optional)
                 </label>
-                <p className="text-sm text-gray-600 mb-2">Select the industry that best matches your career focus</p>
                 <select
                   id="industry"
                   value={industry}
                   onChange={(e) => setIndustry(e.target.value)}
-                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base font-medium"
+                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="">Select an industry</option>
-                  {industries.map((ind) => (
-                    <option key={ind} value={ind}>
-                      {ind}
+                  {industries.map((industry) => (
+                    <option key={industry} value={industry}>
+                      {industry}
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div>
-                <label htmlFor="nickname" className="block text-lg font-semibold text-gray-800 mb-2">
-                  Nickname (optional)
-                </label>
-                <p className="text-sm text-gray-600 mb-2">Choose a nickname to appear on the leaderboard</p>
-                <input
-                  type="text"
-                  id="nickname"
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base"
-                  placeholder="Enter a nickname for your rating"
-                />
-              </div>
-
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-all duration-200"
+                className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
               >
-                {isLoading ? (
-                  <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Analyzing Resume...
-                  </span>
-                ) : (
-                  'Rate My Resume'
-                )}
+                {isLoading ? 'Analyzing...' : 'Rate My Resume'}
               </button>
+
+              {error && (
+                <div className="text-red-600 text-center">
+                  {error}
+                </div>
+              )}
             </form>
           ) : (
-            <div className="space-y-8">
-              <div className="text-center">
-                <h2 className="text-4xl font-bold text-gray-900">
-                  Total Score: <span className="text-indigo-600">{results.totalScore}/100</span>
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-xl shadow-lg">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Presentation Scores</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Formatting</span>
-                      <span className="text-lg font-bold text-indigo-600">{results.presentation.formatting}/10</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Action Verbs</span>
-                      <span className="text-lg font-bold text-indigo-600">{results.presentation.actionVerbs}/10</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Quantifiable Results</span>
-                      <span className="text-lg font-bold text-indigo-600">{results.presentation.quantifiableResults}/10</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Section Structure</span>
-                      <span className="text-lg font-bold text-indigo-600">{results.presentation.sectionStructure}/10</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl shadow-lg">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Substance Scores</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Impact</span>
-                      <span className="text-lg font-bold text-indigo-600">{results.substance.impact}/10</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Complexity</span>
-                      <span className="text-lg font-bold text-indigo-600">{results.substance.complexity}/10</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Leadership</span>
-                      <span className="text-lg font-bold text-indigo-600">{results.substance.leadership}/10</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Originality</span>
-                      <span className="text-lg font-bold text-indigo-600">{results.substance.originality}/10</span>
-                    </div>
-                  </div>
+            <div className="bg-white p-8 rounded-xl shadow-lg">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900">Your Resume Score</h2>
+                <div className="text-6xl font-extrabold text-indigo-600 mt-4">
+                  {results.totalScore}/100
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-xl shadow-lg">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Presentation Feedback</h3>
-                  <ul className="space-y-3">
-                    {results.presentationFeedback.map((feedback: string, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <span className="text-indigo-600 mr-2">•</span>
-                        <span className="text-gray-700">{feedback}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl shadow-lg">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Substance Feedback</h3>
-                  <ul className="space-y-3">
-                    {results.substanceFeedback.map((feedback: string, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <span className="text-indigo-600 mr-2">•</span>
-                        <span className="text-gray-700">{feedback}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {Object.entries(results.scores).map(([category, score]) => (
+                  <div key={category} className="bg-gray-50 p-6 rounded-lg">
+                    <h3 className="text-xl font-semibold text-gray-900 capitalize mb-2">
+                      {category}
+                    </h3>
+                    <div className="text-4xl font-bold text-indigo-600 mb-4">
+                      {score}/25
+                    </div>
+                    <ul className="space-y-2">
+                      {results.feedback[category as keyof typeof results.feedback].map((tip, index) => (
+                        <li key={index} className="text-gray-600">
+                          • {tip}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
 
-              {!rewrittenResume ? (
-                <div className="text-center">
-                  <button
-                    onClick={handleRewrite}
-                    disabled={isLoading}
-                    className="inline-flex items-center px-6 py-3 border border-transparent text-lg font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 transition-all duration-200"
-                  >
-                    {isLoading ? (
-                      <span className="flex items-center">
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Rewriting Resume...
-                      </span>
-                    ) : (
-                      'Unlock Full Rewrite'
-                    )}
-                  </button>
-                </div>
-              ) : (
-                <RewriteCard
-                  rewrittenResume={rewrittenResume}
-                  onCopy={handleCopy}
-                  onDownload={handleDownload}
-                />
-              )}
-            </div>
-          )}
-
-          {error && (
-            <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 font-medium">{error}</p>
+              <div className="mt-8 text-center">
+                <button
+                  onClick={() => {
+                    setResults(null);
+                    setResumeText('');
+                    setIndustry('');
+                  }}
+                  className="bg-indigo-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Rate Another Resume
+                </button>
+              </div>
             </div>
           )}
 
