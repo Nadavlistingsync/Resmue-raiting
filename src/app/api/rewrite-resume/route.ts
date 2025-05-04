@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { generateRewritePrompt } from '@/utils/generateRewritePrompt';
-// import { supabase } from '@/lib/supabase';
 
 if (!process.env.OPENAI_API_KEY) {
   throw new Error('Missing OPENAI_API_KEY');

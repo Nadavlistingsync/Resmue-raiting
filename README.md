@@ -8,7 +8,6 @@ A full-stack SaaS application that helps users improve their resumes by providin
 - Industry-specific feedback
 - Resume rewriting suggestions
 - Leaderboard system
-- User feedback collection
 - Analytics tracking
 
 ## Tech Stack
@@ -16,19 +15,16 @@ A full-stack SaaS application that helps users improve their resumes by providin
 - Next.js 15
 - React 19
 - TypeScript
-- Tailwind CSS
-- Supabase
+- Google Sheets API
 - OpenAI GPT-4
-- Sentry
 - Vercel Analytics
 
 ## Prerequisites
 
 - Node.js 18.x
 - npm or yarn
-- Supabase account
+- Google Cloud Project with Sheets API enabled
 - OpenAI API key
-- Sentry account (optional)
 - Vercel account (optional)
 
 ## Setup
@@ -46,35 +42,25 @@ A full-stack SaaS application that helps users improve their resumes by providin
    yarn install
    ```
 
-3. Create a `.env` file based on `.env.example` and fill in your environment variables:
+3. Create a `.env` file with the following environment variables:
    ```bash
-   cp .env.example .env
+   OPENAI_API_KEY=your_openai_api_key
+   GOOGLE_SHEETS_CLIENT_EMAIL=your_service_account_email
+   GOOGLE_SHEETS_PRIVATE_KEY=your_private_key
+   GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
    ```
 
-4. Set up your Supabase database with the following tables:
-
-   ```sql
-   -- resume_ratings table
-   create table resume_ratings (
-     id uuid default uuid_generate_v4() primary key,
-     nickname text not null,
-     industry text not null,
-     total_score integer not null,
-     presentation_scores jsonb not null,
-     substance_scores jsonb not null,
-     feedback jsonb not null,
-     created_at timestamp with time zone default timezone('utc'::text, now()) not null
-   );
-
-   -- feedback table
-   create table feedback (
-     id uuid default uuid_generate_v4() primary key,
-     resume_id uuid references resume_ratings(id),
-     rating integer not null,
-     comment text,
-     created_at timestamp with time zone default timezone('utc'::text, now()) not null
-   );
-   ```
+4. Set up your Google Sheet:
+   - Create a new Google Sheet
+   - Name the first sheet "Ratings"
+   - Add the following columns:
+     - Nickname
+     - Industry
+     - Total Score
+     - Presentation Scores (JSON)
+     - Substance Scores (JSON)
+     - Feedback (JSON)
+     - Created At
 
 5. Run the development server:
    ```bash
@@ -94,8 +80,8 @@ A full-stack SaaS application that helps users improve their resumes by providin
 
 2. Deploy to Vercel:
    - Connect your GitHub repository to Vercel
-   - Add your environment variables in the Vercel dashboard
-   - Deploy
+   - Add the required environment variables in the Vercel dashboard
+   - Deploy your application
 
 ## Contributing
 
