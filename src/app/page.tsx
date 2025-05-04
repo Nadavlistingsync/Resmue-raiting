@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
-import * as Sentry from "@sentry/nextjs";
 import RewriteCard from '@/components/RewriteCard';
 import FeedbackForm from '@/components/FeedbackForm';
 
@@ -50,7 +49,7 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
+    setError('');
 
     try {
       const response = await fetch('/api/rate-resume', {
@@ -69,7 +68,7 @@ export default function Home() {
         throw new Error('Failed to rate resume');
       }
 
-      const data = (await response.json()) as ScoringResults;
+      const data = await response.json();
       setResults(data);
       setResumeId(data.resumeId ?? null);
 
@@ -82,7 +81,7 @@ export default function Home() {
         });
       }
     } catch (error) {
-      Sentry.captureException(error);
+      console.error('Error rating resume:', error);
       setError('An error occurred while rating your resume. Please try again.');
     } finally {
       setIsLoading(false);
@@ -125,7 +124,7 @@ export default function Home() {
         });
       }
     } catch (error) {
-      Sentry.captureException(error);
+      console.error('Error rewriting resume:', error);
       setError('An error occurred while rewriting your resume. Please try again.');
     } finally {
       setIsLoading(false);

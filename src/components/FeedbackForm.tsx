@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import * as Sentry from "@sentry/nextjs";
 
 interface FeedbackFormProps {
   resumeId: string;
@@ -34,7 +33,6 @@ export default function FeedbackForm({ resumeId, onClose }: FeedbackFormProps) {
 
       onClose();
     } catch (error) {
-      Sentry.captureException(error);
       alert('Failed to submit feedback. Please try again.');
     } finally {
       setIsSubmitting(false);
