@@ -2,16 +2,19 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { generateRewritePrompt } from '@/utils/generateRewritePrompt';
 
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error('Missing OPENAI_API_KEY');
-}
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function POST(request: Request) {
   try {
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json(
+        { error: 'OpenAI API key not configured' },
+        { status: 500 }
+      );
+    }
+
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
     const { resumeText, industry, scoringResults } = await request.json();
 
     if (!resumeText || !industry || !scoringResults) {
