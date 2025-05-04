@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface FeedbackFormProps {
   resumeId: string;
@@ -6,7 +6,6 @@ interface FeedbackFormProps {
 }
 
 export default function FeedbackForm({ resumeId, onClose }: FeedbackFormProps) {
-  const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -15,25 +14,11 @@ export default function FeedbackForm({ resumeId, onClose }: FeedbackFormProps) {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          resumeId,
-          rating,
-          comment,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit feedback');
-      }
-
+      // Here you would typically send the feedback to your backend
+      // For now, we'll just close the form
       onClose();
-    } catch {
-      alert('Failed to submit feedback. Please try again.');
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -44,28 +29,6 @@ export default function FeedbackForm({ resumeId, onClose }: FeedbackFormProps) {
       <div className="bg-white rounded-lg p-6 max-w-md w-full">
         <h3 className="text-xl font-semibold mb-4">How was your experience?</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Rating
-            </label>
-            <div className="flex space-x-2">
-              {[1, 2, 3, 4, 5].map((value) => (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => setRating(value)}
-                  className={`w-10 h-10 rounded-full ${
-                    rating >= value
-                      ? 'bg-yellow-400 text-white'
-                      : 'bg-gray-200'
-                  }`}
-                >
-                  ★
-                </button>
-              ))}
-            </div>
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Comments (optional)
@@ -81,7 +44,7 @@ export default function FeedbackForm({ resumeId, onClose }: FeedbackFormProps) {
           <div className="flex space-x-3">
             <button
               type="submit"
-              disabled={isSubmitting || rating === 0}
+              disabled={isSubmitting}
               className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
