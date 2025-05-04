@@ -80,15 +80,46 @@ export default function Home() {
       }
 
       const data = await response.json();
-      setResults(data);
-      setResumeId(data.resumeId ?? null);
+      // Map backend response to expected frontend structure
+      const mapped = {
+        totalScore: data.overallScore ?? 0,
+        scores: {
+          content: data.categories?.technical?.score ?? 0,
+          formatting: data.categories?.experience?.score ?? 0,
+          merit: data.categories?.education?.score ?? 0,
+          relevance: data.categories?.projects?.score ?? 0,
+        },
+        feedback: {
+          content: [],
+          formatting: [],
+          merit: [],
+          relevance: [],
+        },
+        presentation: {
+          formatting: data.categories?.technical?.score ?? 0,
+          actionVerbs: data.categories?.['soft-skills']?.score ?? 0,
+          quantifiableResults: data.categories?.projects?.score ?? 0,
+          sectionStructure: data.categories?.experience?.score ?? 0,
+        },
+        substance: {
+          impact: data.categories?.overall?.score ?? 0,
+          complexity: data.categories?.education?.score ?? 0,
+          leadership: data.categories?.['soft-skills']?.score ?? 0,
+          originality: data.categories?.projects?.score ?? 0,
+        },
+        presentationFeedback: [],
+        substanceFeedback: [],
+        resumeId: data.id ?? null,
+      };
+      setResults(mapped);
+      setResumeId(data.id ?? null);
 
       // Track successful resume rating
       if (typeof window !== 'undefined') {
         const analytics = (window as { va?: (event: string, data: unknown) => void }).va;
         analytics?.('resume_rated', {
           industry,
-          totalScore: data.totalScore,
+          totalScore: data.overallScore,
         });
       }
     } catch (error) {
