@@ -32,7 +32,7 @@ export default function FeedbackForm({ resumeId, onClose }: FeedbackFormProps) {
       }
 
       onClose();
-    } catch (error) {
+    } catch {
       alert('Failed to submit feedback. Please try again.');
     } finally {
       setIsSubmitting(false);
