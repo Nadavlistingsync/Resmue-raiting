@@ -232,7 +232,7 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {Object.entries(results.scores).map(([category, score]) => (
+                {(Object.entries(results.scores ?? {})).map(([category, score]) => (
                   <div key={category} className="bg-gray-50 p-6 rounded-lg">
                     <h3 className="text-xl font-semibold text-gray-900 capitalize mb-2">
                       {category}
