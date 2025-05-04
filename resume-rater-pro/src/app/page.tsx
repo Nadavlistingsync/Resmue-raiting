@@ -57,8 +57,26 @@ export default function Home() {
         throw new Error(errorData.message || 'Failed to rate resume');
       }
 
-      const data: RatingResponse = await response.json();
-      setRating(data);
+      const data = await response.json();
+      // Map backend response to expected frontend structure
+      const mapped: RatingResponse = {
+        totalScore: data.overallScore,
+        presentation: {
+          formatting: data.categories?.technical?.score ?? 0,
+          actionVerbs: data.categories?.['soft-skills']?.score ?? 0,
+          quantifiableResults: data.categories?.projects?.score ?? 0,
+          sectionStructure: data.categories?.experience?.score ?? 0,
+        },
+        substance: {
+          impact: data.categories?.overall?.score ?? 0,
+          complexity: data.categories?.education?.score ?? 0,
+          leadership: data.categories?.['soft-skills']?.score ?? 0,
+          originality: data.categories?.projects?.score ?? 0,
+        },
+        presentationFeedback: [], // Placeholder, backend does not provide
+        substanceFeedback: [],    // Placeholder, backend does not provide
+      };
+      setRating(mapped);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
