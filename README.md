@@ -1,107 +1,49 @@
-# Resume Rater Pro
+# Resume Rating Pro
 
-A full-stack SaaS application that helps users improve their resumes by providing AI-powered analysis and feedback.
+A professional resume rating application that provides detailed feedback and scoring based on multiple criteria.
 
 ## Features
 
-- AI-powered resume analysis and scoring across four categories:
-  - Content (25 points)
-  - Formatting (25 points)
-  - Merit (25 points)
-  - Relevance (25 points)
-- Industry-specific feedback
-- Resume rewriting suggestions
-- Leaderboard system
-- Analytics tracking
+- **Comprehensive Rating System**: Evaluates resumes across multiple categories including technical skills, experience, education, projects, and soft skills
+- **Tier-Based Scoring**: Categorizes resumes into four tiers:
+  - 🏆 Top 1% (98-100): Elite, polished, ready to submit anywhere
+  - 🥈 Top 10% (90-97): Excellent, minor improvements possible
+  - 🥉 Mid-tier (70-89): Good, but needs targeted improvements
+  - 📝 Below average (<70): Likely needs major revision
+- **Detailed Feedback**: Provides specific feedback for each category
+- **Industry-Specific Analysis**: Tailors feedback based on the industry
+- **Leaderboard**: Tracks top performers across different categories
 
-## Tech Stack
-
-- Next.js 14.0.4
-- React 18.2.0
-- TypeScript
-- TailwindCSS
-- Google Sheets API
-- OpenAI GPT-4
-- Vercel Analytics
-
-## Prerequisites
-
-- Node.js >= 18.0.0
-- npm or yarn
-- Google Cloud Project with Sheets API enabled
-- OpenAI API key
-- Vercel account (optional)
-
-## Setup
+## Getting Started
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/resume-rater-pro.git
-   cd resume-rater-pro
-   ```
+```bash
+git clone https://github.com/Nadavlistingsync/resume-rating.git
+```
 
 2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+```bash
+cd resume-rating
+npm install
+```
 
-3. Create a `.env.local` file with the following environment variables:
-   ```bash
-   OPENAI_API_KEY=your_openai_api_key
-   GOOGLE_SHEETS_CLIENT_EMAIL=your_service_account_email
-   GOOGLE_SHEETS_PRIVATE_KEY=your_private_key
-   GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
-   NEXT_PUBLIC_APP_URL=http://localhost:3000
-   ```
+3. Set up environment variables:
+Create a `.env.local` file with the following variables:
+```
+GOOGLE_SHEETS_CLIENT_EMAIL=your_client_email
+GOOGLE_SHEETS_PRIVATE_KEY=your_private_key
+GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
+```
 
-4. Set up your Google Sheet:
-   - Create a new Google Sheet
-   - Name the first sheet "Ratings"
-   - Add the following columns:
-     - Nickname
-     - Industry
-     - Total Score
-     - Presentation Scores (JSON)
-     - Substance Scores (JSON)
-     - Feedback (JSON)
-     - Created At
-
-5. Run the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-## Deployment
-
-1. Push your code to GitHub:
-   ```bash
-   git add .
-   git commit -m "Initial commit"
-   git push origin main
-   ```
-
-2. Deploy to Vercel:
-   - Connect your GitHub repository to Vercel
-   - Add the required environment variables in the Vercel dashboard:
-     - `OPENAI_API_KEY`
-     - `GOOGLE_SHEETS_CLIENT_EMAIL`
-     - `GOOGLE_SHEETS_PRIVATE_KEY`
-     - `GOOGLE_SHEETS_SPREADSHEET_ID`
-     - `NEXT_PUBLIC_APP_URL`
-   - Deploy your application
+4. Run the development server:
+```bash
+npm run dev
+```
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details. 
