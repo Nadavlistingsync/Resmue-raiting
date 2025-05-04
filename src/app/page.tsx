@@ -359,6 +359,38 @@ export default function Home() {
                       </div>
                     )}
                   </div>
+                  <div className="text-center mt-8">
+                    <button
+                      onClick={handleRewrite}
+                      disabled={isLoading}
+                      className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                    >
+                      {isLoading ? 'Generating Better Version...' : 'See My Better Version'}
+                    </button>
+                  </div>
+                  {rewrittenResume && (
+                    <div className="mt-8 bg-gray-50 p-6 rounded-lg shadow">
+                      <h3 className="text-2xl font-bold mb-4 text-center text-indigo-700">Your Improved Resume</h3>
+                      <pre className="whitespace-pre-wrap text-left text-gray-800 bg-white p-4 rounded-lg overflow-x-auto max-h-96">{rewrittenResume}</pre>
+                      <div className="flex justify-center gap-4 mt-4">
+                        <button
+                          onClick={handleCopy}
+                          className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
+                        >
+                          Copy
+                        </button>
+                        <button
+                          onClick={handleDownload}
+                          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                        >
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  {error && (
+                    <div className="mt-4 text-red-600 text-center">{error}</div>
+                  )}
                 </div>
               )}
             </div>
