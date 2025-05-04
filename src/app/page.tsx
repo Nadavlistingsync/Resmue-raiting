@@ -239,6 +239,21 @@ export default function Home() {
                 </select>
               </div>
 
+              <div>
+                <label htmlFor="nickname" className="block text-lg font-semibold text-gray-800 mb-2">
+                  Nickname (required for leaderboard)
+                </label>
+                <input
+                  type="text"
+                  id="nickname"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base"
+                  placeholder="Enter a nickname for the leaderboard"
+                  required
+                />
+              </div>
+
               <button
                 type="submit"
                 disabled={isLoading}
