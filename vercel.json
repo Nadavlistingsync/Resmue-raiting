@@ -5,11 +5,5 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "env": {
-    "OPENAI_API_KEY": "@openai_api_key",
-    "GOOGLE_SHEETS_CLIENT_EMAIL": "@google_sheets_client_email",
-    "GOOGLE_SHEETS_PRIVATE_KEY": "@google_sheets_private_key",
-    "GOOGLE_SHEETS_SPREADSHEET_ID": "@google_sheets_spreadsheet_id"
-  }
+  "regions": ["iad1"]
 } 
