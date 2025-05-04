@@ -1,4 +1,5 @@
 {
+  "name": "resume-rating",
   "version": 2,
   "buildCommand": "next build",
   "devCommand": "next dev",
