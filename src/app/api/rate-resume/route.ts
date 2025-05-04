@@ -32,19 +32,28 @@ export async function POST(request: Request) {
 
     // Append to Google Sheets
     try {
-      await googleSheets.appendRating({
+      // Map breakdowns for presentation and substance
+      const categories = rating.categories;
+      const presentation_scores = {
+        ...categories.technical?.breakdown,
+        ...categories.experience?.breakdown,
+      };
+      const substance_scores = {
+        ...categories.education?.breakdown,
+        ...categories.projects?.breakdown,
+        ...categories['soft-skills']?.breakdown,
+        ...categories.overall?.breakdown,
+      };
+      const result = await googleSheets.appendRating({
         nickname: nickname || 'anonymous',
         industry: industry || '',
         total_score: rating.overallScore,
-        presentation_scores: Object.fromEntries(
-          Object.entries(rating.categories).map(([cat, val]) => [cat, val.score])
-        ),
-        substance_scores: Object.fromEntries(
-          Object.entries(rating.categories).map(([cat, val]) => [cat, val.score])
-        ),
+        presentation_scores,
+        substance_scores,
         feedback: {}, // No feedback yet
         created_at: new Date().toISOString(),
       });
+      console.log('Appended to Google Sheets:', result);
     } catch (err) {
       console.error('Failed to append to Google Sheets:', err);
       // Do not throw, just log
