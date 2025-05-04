@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { generateRewritePrompt } from '@/utils/generateRewritePrompt';
 
+// Initialize OpenAI client with optional API key
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || '',
+});
+
 export async function POST(request: Request) {
   try {
     if (!process.env.OPENAI_API_KEY) {
@@ -10,10 +15,6 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
-
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
 
     const { resumeText, industry, scoringResults } = await request.json();
 
