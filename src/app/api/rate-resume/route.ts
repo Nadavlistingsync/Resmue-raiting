@@ -1,44 +1,57 @@
 import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
-import { generateScoringPrompt } from '@/utils/generateScoringPrompt';
-
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error('Missing OPENAI_API_KEY');
-}
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { RatingService } from '@/lib/ratingService';
+import { Category } from '@/lib/types';
 
 export async function POST(request: Request) {
   try {
-    const { resumeText, industry } = await request.json();
+    const { resumeText, userId } = await request.json();
 
-    if (!resumeText) {
+    if (!resumeText || !userId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    const prompt = generateScoringPrompt({ 
-      resumeText, 
-      industry: industry || 'general' 
-    });
-    
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo-preview',
-      messages: [{ role: 'user', content: prompt }],
-      response_format: { type: 'json_object' },
-    });
+    const ratingService = RatingService.getInstance();
+    const rating = ratingService.rateResume(resumeText, userId);
 
-    const result = JSON.parse(completion.choices[0].message.content || '{}');
-
-    return NextResponse.json(result);
+    return NextResponse.json(rating);
   } catch (error) {
-    console.error('Error in rate-resume:', error);
+    console.error('Error rating resume:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to rate resume' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const category = searchParams.get('category') as Category;
+    const userId = searchParams.get('userId');
+
+    const ratingService = RatingService.getInstance();
+
+    if (category) {
+      const leaderboard = ratingService.getLeaderboard(category);
+      return NextResponse.json(leaderboard);
+    }
+
+    if (userId) {
+      const history = ratingService.getUserHistory(userId);
+      return NextResponse.json(history);
+    }
+
+    return NextResponse.json(
+      { error: 'Missing required parameters' },
+      { status: 400 }
+    );
+  } catch (error) {
+    console.error('Error fetching leaderboard/history:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch data' },
       { status: 500 }
     );
   }
