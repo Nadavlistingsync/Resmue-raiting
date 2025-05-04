@@ -72,6 +72,7 @@ export default function Home() {
         body: JSON.stringify({
           resumeText,
           industry,
+          nickname,
         }),
       });
 
@@ -81,13 +82,17 @@ export default function Home() {
 
       const data = await response.json();
       // Map backend response to expected frontend structure
+      const content = data.categories?.technical?.score ?? 0;
+      const formatting = data.categories?.experience?.score ?? 0;
+      const merit = data.categories?.education?.score ?? 0;
+      const relevance = data.categories?.projects?.score ?? 0;
       const mapped = {
-        totalScore: data.overallScore ?? 0,
+        totalScore: content + formatting + merit + relevance,
         scores: {
-          content: data.categories?.technical?.score ?? 0,
-          formatting: data.categories?.experience?.score ?? 0,
-          merit: data.categories?.education?.score ?? 0,
-          relevance: data.categories?.projects?.score ?? 0,
+          content,
+          formatting,
+          merit,
+          relevance,
         },
         feedback: {
           content: [],
