@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { RatingService } from '@/lib/ratingService';
 import { Category } from '@/lib/types';
+import { googleSheets } from '@/lib/google-sheets';
 
 export async function POST(request: Request) {
   try {
@@ -28,6 +29,26 @@ export async function POST(request: Request) {
 
     // Optionally, log the rating result for feedback loop
     console.log('Rating result:', rating);
+
+    // Append to Google Sheets
+    try {
+      await googleSheets.appendRating({
+        nickname: nickname || 'anonymous',
+        industry: industry || '',
+        total_score: rating.overallScore,
+        presentation_scores: Object.fromEntries(
+          Object.entries(rating.categories).map(([cat, val]) => [cat, val.score])
+        ),
+        substance_scores: Object.fromEntries(
+          Object.entries(rating.categories).map(([cat, val]) => [cat, val.score])
+        ),
+        feedback: {}, // No feedback yet
+        created_at: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.error('Failed to append to Google Sheets:', err);
+      // Do not throw, just log
+    }
 
     return NextResponse.json(rating);
   } catch (error) {
