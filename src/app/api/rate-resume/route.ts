@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       const payload = {
         nickname: nickname || 'anonymous',
         industry: industry || '',
-        total_score: rating.overallScore,
+        total_score: (rating as any).displayScore ?? rating.overallScore,
         presentation_scores,
         substance_scores,
         feedback: {}, // No feedback yet
@@ -61,7 +61,8 @@ export async function POST(request: Request) {
       // Do not throw, just log
     }
 
-    return NextResponse.json(rating);
+    // Return displayScore as totalScore for frontend compatibility
+    return NextResponse.json({ ...rating, totalScore: (rating as any).displayScore ?? rating.overallScore });
   } catch (error) {
     console.error('Error rating resume:', error);
     return NextResponse.json(

@@ -48,10 +48,20 @@ export class RatingService {
     // Calculate overall score (normalized to 100)
     rating.overallScore = Math.min(100, Math.round((totalWeightedScore / totalWeight) * 100));
 
-    // Determine tier based on overall score
-    rating.tier = TIERS.find(tier => 
-      rating.overallScore >= tier.minScore && rating.overallScore <= tier.maxScore
+    // Calculate displayScore as sum of main four categories (max 100)
+    const displayScore =
+      (rating.categories.technical?.score || 0) +
+      (rating.categories.experience?.score || 0) +
+      (rating.categories.education?.score || 0) +
+      (rating.categories.projects?.score || 0);
+
+    // Determine tier based on displayScore
+    rating.tier = TIERS.find(tier =>
+      displayScore >= tier.minScore && displayScore <= tier.maxScore
     );
+
+    // Attach displayScore for API consumers
+    (rating as any).displayScore = displayScore;
 
     return rating;
   }
