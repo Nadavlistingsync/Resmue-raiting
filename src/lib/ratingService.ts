@@ -1,4 +1,4 @@
-import { Category, ResumeRating, LeaderboardEntry, RATING_CRITERIA } from './types';
+import { Category, ResumeRating, LeaderboardEntry, RATING_CRITERIA, TIERS } from './types';
 
 export class RatingService {
   private static instance: RatingService;
@@ -47,6 +47,11 @@ export class RatingService {
 
     // Calculate overall score (normalized to 100)
     rating.overallScore = Math.min(100, Math.round((totalWeightedScore / totalWeight) * 100));
+
+    // Determine tier based on overall score
+    rating.tier = TIERS.find(tier => 
+      rating.overallScore >= tier.minScore && rating.overallScore <= tier.maxScore
+    );
 
     return rating;
   }

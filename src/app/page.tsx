@@ -34,6 +34,11 @@ interface ScoringResults {
   presentationFeedback: string[];
   substanceFeedback: string[];
   resumeId?: string;
+  tier?: {
+    name: string;
+    emoji: string;
+    description: string;
+  };
 }
 
 const industries = [
@@ -116,6 +121,7 @@ export default function Home() {
         presentationFeedback: [],
         substanceFeedback: [],
         resumeId: data.id ?? null,
+        tier: data.tier ?? undefined,
       };
       setResults(mapped);
       setResumeId(data.id ?? null);
@@ -336,6 +342,25 @@ export default function Home() {
                   Rate Another Resume
                 </button>
               </div>
+
+              {results.tier && (
+                <div className="mt-8 space-y-6">
+                  <div className="text-center">
+                    <h2 className="text-4xl font-bold text-gray-900">
+                      Total Score: <span className="text-indigo-600">{results.totalScore}/100</span>
+                    </h2>
+                    {results.tier && (
+                      <div className="mt-4 p-4 bg-indigo-50 rounded-lg">
+                        <div className="flex items-center justify-center space-x-2">
+                          <span className="text-2xl">{results.tier.emoji}</span>
+                          <h3 className="text-xl font-bold text-indigo-800">{results.tier.name}</h3>
+                        </div>
+                        <p className="mt-2 text-indigo-600">{results.tier.description}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

@@ -10,6 +10,45 @@ export interface CategoryCriteria {
   [key: string]: RatingCriteria;
 }
 
+export type Tier = {
+  name: string;
+  emoji: string;
+  minScore: number;
+  maxScore: number;
+  description: string;
+};
+
+export const TIERS: Tier[] = [
+  {
+    name: 'Top 1%',
+    emoji: '🏆',
+    minScore: 98,
+    maxScore: 100,
+    description: 'Elite, polished, ready to submit anywhere'
+  },
+  {
+    name: 'Top 10%',
+    emoji: '🥈',
+    minScore: 90,
+    maxScore: 97,
+    description: 'Excellent, minor improvements possible'
+  },
+  {
+    name: 'Mid-tier',
+    emoji: '🥉',
+    minScore: 70,
+    maxScore: 89,
+    description: 'Good, but needs targeted improvements'
+  },
+  {
+    name: 'Below average',
+    emoji: '📝',
+    minScore: 0,
+    maxScore: 69,
+    description: 'Likely needs major revision'
+  }
+];
+
 export interface ResumeRating {
   id: string;
   userId: string;
@@ -24,6 +63,7 @@ export interface ResumeRating {
   };
   overallScore: number;
   resumeText: string;
+  tier?: Tier;
 }
 
 export interface LeaderboardEntry {

@@ -44,7 +44,7 @@ export async function POST(request: Request) {
         ...categories['soft-skills']?.breakdown,
         ...categories.overall?.breakdown,
       };
-      const result = await googleSheets.appendRating({
+      const payload = {
         nickname: nickname || 'anonymous',
         industry: industry || '',
         total_score: rating.overallScore,
@@ -52,7 +52,9 @@ export async function POST(request: Request) {
         substance_scores,
         feedback: {}, // No feedback yet
         created_at: new Date().toISOString(),
-      });
+      };
+      console.log('Attempting to append to Google Sheets with payload:', payload);
+      const result = await googleSheets.appendRating(payload);
       console.log('Appended to Google Sheets:', result);
     } catch (err) {
       console.error('Failed to append to Google Sheets:', err);
