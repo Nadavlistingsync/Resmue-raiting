@@ -4,23 +4,36 @@ import { Category } from '@/lib/types';
 
 export async function POST(request: Request) {
   try {
-    const { resumeText, userId } = await request.json();
+    const body = await request.json();
+    console.log('Incoming /api/rate-resume request:', body);
+    const { resumeText, industry, nickname } = body;
 
-    if (!resumeText || !userId) {
+    const missingFields = [];
+    if (!resumeText) missingFields.push('resumeText');
+    if (!industry) missingFields.push('industry');
+    // nickname is optional
+
+    if (missingFields.length > 0) {
+      console.error('Missing required fields:', missingFields);
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: `Missing required fields: ${missingFields.join(', ')}` },
         { status: 400 }
       );
     }
 
+    // Use a generated userId or fallback to nickname/anonymous
+    const userId = nickname || 'anonymous';
     const ratingService = RatingService.getInstance();
     const rating = ratingService.rateResume(resumeText, userId);
+
+    // Optionally, log the rating result for feedback loop
+    console.log('Rating result:', rating);
 
     return NextResponse.json(rating);
   } catch (error) {
     console.error('Error rating resume:', error);
     return NextResponse.json(
-      { error: 'Failed to rate resume' },
+      { error: 'Failed to rate resume', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
