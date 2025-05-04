@@ -1,24 +1,25 @@
 import { google } from 'googleapis';
 
-if (!process.env.GOOGLE_SHEETS_CLIENT_EMAIL) {
-  throw new Error('Missing GOOGLE_SHEETS_CLIENT_EMAIL');
+const isGoogleSheetsConfigured = () => {
+  return !!(
+    process.env.GOOGLE_SHEETS_CLIENT_EMAIL &&
+    process.env.GOOGLE_SHEETS_PRIVATE_KEY &&
+    process.env.GOOGLE_SHEETS_SPREADSHEET_ID
+  );
+};
+
+let auth: any = null;
+let sheets: any = null;
+
+if (isGoogleSheetsConfigured()) {
+  auth = new google.auth.JWT({
+    email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
+    key: process.env.GOOGLE_SHEETS_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
+
+  sheets = google.sheets({ version: 'v4', auth });
 }
-
-if (!process.env.GOOGLE_SHEETS_PRIVATE_KEY) {
-  throw new Error('Missing GOOGLE_SHEETS_PRIVATE_KEY');
-}
-
-if (!process.env.GOOGLE_SHEETS_SPREADSHEET_ID) {
-  throw new Error('Missing GOOGLE_SHEETS_SPREADSHEET_ID');
-}
-
-const auth = new google.auth.JWT({
-  email: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
-  key: process.env.GOOGLE_SHEETS_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
-
-const sheets = google.sheets({ version: 'v4', auth });
 
 export interface ResumeRating {
   id: string;
@@ -33,6 +34,11 @@ export interface ResumeRating {
 
 export const googleSheets = {
   async appendRating(rating: Omit<ResumeRating, 'id'>) {
+    if (!isGoogleSheetsConfigured()) {
+      console.warn('Google Sheets is not configured. Skipping append operation.');
+      return null;
+    }
+
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEETS_SPREADSHEET_ID,
       range: 'Ratings!A:G',
@@ -54,6 +60,11 @@ export const googleSheets = {
   },
 
   async getLeaderboard(limit = 50) {
+    if (!isGoogleSheetsConfigured()) {
+      console.warn('Google Sheets is not configured. Returning empty leaderboard.');
+      return [];
+    }
+
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEETS_SPREADSHEET_ID,
       range: 'Ratings!A:G',

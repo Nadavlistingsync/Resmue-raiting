@@ -4,7 +4,11 @@ A full-stack SaaS application that helps users improve their resumes by providin
 
 ## Features
 
-- AI-powered resume analysis and scoring
+- AI-powered resume analysis and scoring across four categories:
+  - Content (25 points)
+  - Formatting (25 points)
+  - Merit (25 points)
+  - Relevance (25 points)
 - Industry-specific feedback
 - Resume rewriting suggestions
 - Leaderboard system
@@ -12,16 +16,17 @@ A full-stack SaaS application that helps users improve their resumes by providin
 
 ## Tech Stack
 
-- Next.js 15
-- React 19
+- Next.js 14.0.4
+- React 18.2.0
 - TypeScript
+- TailwindCSS
 - Google Sheets API
 - OpenAI GPT-4
 - Vercel Analytics
 
 ## Prerequisites
 
-- Node.js 18.x
+- Node.js >= 18.0.0
 - npm or yarn
 - Google Cloud Project with Sheets API enabled
 - OpenAI API key
@@ -42,12 +47,13 @@ A full-stack SaaS application that helps users improve their resumes by providin
    yarn install
    ```
 
-3. Create a `.env` file with the following environment variables:
+3. Create a `.env.local` file with the following environment variables:
    ```bash
    OPENAI_API_KEY=your_openai_api_key
    GOOGLE_SHEETS_CLIENT_EMAIL=your_service_account_email
    GOOGLE_SHEETS_PRIVATE_KEY=your_private_key
    GOOGLE_SHEETS_SPREADSHEET_ID=your_spreadsheet_id
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
    ```
 
 4. Set up your Google Sheet:
@@ -80,7 +86,12 @@ A full-stack SaaS application that helps users improve their resumes by providin
 
 2. Deploy to Vercel:
    - Connect your GitHub repository to Vercel
-   - Add the required environment variables in the Vercel dashboard
+   - Add the required environment variables in the Vercel dashboard:
+     - `OPENAI_API_KEY`
+     - `GOOGLE_SHEETS_CLIENT_EMAIL`
+     - `GOOGLE_SHEETS_PRIVATE_KEY`
+     - `GOOGLE_SHEETS_SPREADSHEET_ID`
+     - `NEXT_PUBLIC_APP_URL`
    - Deploy your application
 
 ## Contributing

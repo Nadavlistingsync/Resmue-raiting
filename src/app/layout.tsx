@@ -21,9 +21,11 @@ export default function RootLayout({
         <nav className="bg-white shadow-sm">
           <div className="max-w-4xl mx-auto px-4 py-4">
             <div className="flex justify-between items-center">
-              <Link href="/" className="text-xl font-bold text-blue-600">
-                Resume Rater Pro
-              </Link>
+              <div className="flex-shrink-0">
+                <Link href="/" className="text-xl font-bold text-blue-600">
+                  Resume Rater Pro
+                </Link>
+              </div>
               <div className="space-x-4">
                 <Link
                   href="/"
