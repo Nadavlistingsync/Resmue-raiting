@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import RewriteCard from '@/components/RewriteCard';
 import FeedbackForm from '@/components/FeedbackForm';
@@ -57,6 +57,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [resumeId, setResumeId] = useState<string | null>(null);
+  const [percentile, setPercentile] = useState<number | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -196,6 +197,22 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    const fetchPercentile = async () => {
+      if (!results) return;
+      try {
+        const response = await fetch('/api/leaderboard');
+        if (!response.ok) return;
+        const data = await response.json();
+        const allScores = data.map((row: any) => row.total_score ?? 0);
+        const betterThan = allScores.filter((score: number) => score < results.totalScore).length;
+        const pct = allScores.length > 0 ? 100 - Math.floor((betterThan / allScores.length) * 100) : 100;
+        setPercentile(pct);
+      } catch {}
+    };
+    fetchPercentile();
+  }, [results]);
+
   return (
     <>
       <Analytics />
@@ -275,6 +292,11 @@ export default function Home() {
             </form>
           ) : (
             <div className="bg-white p-8 rounded-xl shadow-lg">
+              {percentile !== null && (
+                <div className="text-center mb-4 text-xl font-semibold text-green-700">
+                  You're in the top {percentile}% of all resumes rated!
+                </div>
+              )}
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-900">Your Resume Score</h2>
                 <div className="text-6xl font-extrabold text-indigo-600 mt-4">
