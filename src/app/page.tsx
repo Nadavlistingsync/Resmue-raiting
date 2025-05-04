@@ -222,9 +222,9 @@ export default function Home() {
   return (
     <>
       <Analytics />
-      <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 mb-4 mt-16">
+      <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto gap-y-6 flex flex-col">
+          <h1 className="text-5xl font-extrabold text-center bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 mb-4 mt-16 font-sans tracking-tight leading-tight">
             Resume Rater Pro
           </h1>
           <p className="text-xl text-center text-gray-600 mb-8 font-medium">
@@ -363,25 +363,33 @@ export default function Home() {
                     <button
                       onClick={handleRewrite}
                       disabled={isLoading}
-                      className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                      className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 transition-all duration-200 shadow"
                     >
                       {isLoading ? 'Generating Better Version...' : 'See My Better Version'}
                     </button>
                   </div>
                   {rewrittenResume && (
-                    <div className="mt-8 bg-gray-50 p-6 rounded-lg shadow">
-                      <h3 className="text-2xl font-bold mb-4 text-center text-indigo-700">Your Improved Resume</h3>
-                      <pre className="whitespace-pre-wrap text-left text-gray-800 bg-white p-4 rounded-lg overflow-x-auto max-h-96">{rewrittenResume}</pre>
+                    <div className="mt-8 bg-white p-6 rounded-xl shadow-xl">
+                      <h3 className="text-2xl font-bold mb-6 text-center text-indigo-700 font-sans">Your Improved Resume</h3>
+                      <pre className="whitespace-pre-wrap text-left text-gray-800 bg-gray-50 p-4 rounded-lg overflow-x-auto max-h-96 font-mono text-base leading-relaxed">
+                        {rewrittenResume.split('\n').map((line, idx) => {
+                          // Highlight headers like 'Objective:', 'Professional Experience:', etc.
+                          if (/^(SUMMARY|EXPERIENCE|SKILLS|PROJECT HIGHLIGHTS|EDUCATION|OBJECTIVE|PROFESSIONAL EXPERIENCE|PROJECTS|ACHIEVEMENTS|CERTIFICATIONS|CONTACT|PROFILE|ABOUT|WORK HISTORY|TECHNICAL SKILLS|LEADERSHIP|AWARDS|INTERESTS|REFERENCES|\w+:)$/i.test(line.trim())) {
+                            return <span key={idx} className="block font-bold text-indigo-700 text-lg mt-4 mb-2">{line}</span>;
+                          }
+                          return <span key={idx}>{line + '\n'}</span>;
+                        })}
+                      </pre>
                       <div className="flex justify-center gap-4 mt-4">
                         <button
                           onClick={handleCopy}
-                          className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
+                          className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-150"
                         >
                           Copy
                         </button>
                         <button
                           onClick={handleDownload}
-                          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-150"
                         >
                           Download
                         </button>
